@@ -89,6 +89,9 @@ class UsersController < ApplicationController
       if @user.update(user_params)
         format.html do
           if request.xhr?
+            flash[:notice] = "User was successfully updated."
+            # elimina flash no final da ação
+            flash.discard :notice
             render :edit
           else
             redirect_to @user, notice: 'User was successfully updated.'
