@@ -154,6 +154,9 @@ $('.users.index').ready(function() {
 	modal.on('ajax:success', 'form', function(evt, data, status, xhr){
 	  modal.empty().html(xhr.responseText);
 	})
+	.on('ajax:beforeSend', 'form', function(evt, xhr, settings){
+		$(this).find('.j_loadboxedit').fadeIn('fast');
+	})
 	.on('click','.j_buttom_close', function(){
 			modal.children().fadeOut("fast",function(){
 				modal.fadeOut("slow");

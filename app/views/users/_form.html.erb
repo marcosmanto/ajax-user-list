@@ -50,9 +50,9 @@
       <span class="campo">Condirme a senha:</span>
       <%= f.text_field :password_confirmation %>
     <% end %>  
+    
     <img src="<%= asset_path 'load.gif' %>" width="20" style="margin:8px 0 0 10px; display:none;" class="j_loadboxedit" />
-
-    <%= f.submit class: "btnedit j_buttom_edit" %>
+    <%= f.submit class: "btnedit j_buttom_edit", data: { disable_with: "Please wait..." } %>
     <%= f.submit 'Fechar', type: 'reset', class: "btnclose j_buttom_close" %>
    <!--  <input type="submit" value="Atualizar" class="btnedit j_buttom_edit" /> 
     <input type="reset" value="Fechar" class="btnclose j_buttom_close" /> -->
