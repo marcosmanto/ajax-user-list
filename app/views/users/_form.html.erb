@@ -1,0 +1,61 @@
+<% @user ||= user %>
+<%#= if @user.persisted?
+      '<div class="editar">'.html_safe 
+    else
+      '<div class="criar">'.html_safe 
+    end
+%>
+  <% form_name = {name: "editar"} if  @user.persisted? %>
+  <%= form_for(@user, html: form_name, remote: true) do |f| %>
+    <% if @user.errors.any? %>
+      <%= javascript_tag do -%>
+        BootstrapDialog.show({
+            title: '<%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:',
+            message:  '<ul>' + 
+                      <% @user.errors.full_messages.each do |message| %>
+                        '<li><%= message %></li>' +
+                      <% end %>
+                      '</ul>',
+            draggable: true
+        });
+      <%- end -%>
+    <% end %>
+
+    <%= f.label :nome do %>
+      <span class="campo">Nome:</span>
+      <%= f.text_field :nome %>
+    <% end %>
+
+    <%= f.label :sobrenome do %>
+      <span class="campo">Sobrenome:</span>
+      <%= f.text_field :sobrenome %>
+    <% end %>  
+
+    <%= f.label :email do %>
+      <span class="campo">Email:</span>
+      <%= f.text_field :email %>
+    <% end %>  
+
+    <%= f.label :telefone do %>
+      <span class="campo">Telefone:</span>
+      <%= f.text_field :telefone %>
+    <% end %>  
+
+    <%= f.label :password do %>
+      <span class="campo">Senha:</span>
+      <%= f.text_field :password %>
+    <% end %>  
+
+    <%= f.label :password_confirmation do %>
+      <span class="campo">Condirme a senha:</span>
+      <%= f.text_field :password_confirmation %>
+    <% end %>  
+    <img src="<%= asset_path 'load.gif' %>" width="20" style="margin:8px 0 0 10px; display:none;" class="j_loadboxedit" />
+
+    <%= f.submit class: "btnedit j_buttom_edit" %>
+    <%= f.submit 'Fechar', type: 'reset', class: "btnclose j_buttom_close" %>
+   <!--  <input type="submit" value="Atualizar" class="btnedit j_buttom_edit" /> 
+    <input type="reset" value="Fechar" class="btnclose j_buttom_close" /> -->
+
+  <% end %>
+<!-- </div> -->

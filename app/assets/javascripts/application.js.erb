@@ -1,0 +1,203 @@
+//= require jquery
+//= require jquery_ujs
+//= require jquery.readyselector
+//= require js/bootstrap.min.js
+//= require js-routes
+//= require bootstrap-dialog.min
+
+$(function(){
+
+
+}); // JQuery is loaded
+
+$('.users.index').ready(function() {
+	console.log('user index');
+
+	//GERAIS
+	var errmsg	= $('.msg');
+	var forms	= $('form');
+	var botao	= $('.j_buttom');
+	var path = 'users.json';
+
+	botao.attr("type","submit");
+	
+	// forms.submit(function(){
+	// 	errmsg.fadeOut("fast");
+	// 	return false;
+	// });
+
+	function carregando(){
+		errmsg.empty(1).html('<p class="load"><img src="img/load.gif" alt="Carregando..."> Aguarde, enviando requisição!</p>').fadeIn("fast");
+	}
+	
+	function errosend(){
+		errmsg.empty().html('<p class="erro"><strong>Erro inesperado,</strong> Favor contate o admin!</p>').fadeIn("fast");
+	}
+
+	//GENÉRICAS
+	function errdados( mensagem ){
+		errmsg.empty().html('<p class="erro">'+mensagem+'</p>').fadeIn("fast");
+	}
+	
+	function sucesso( mensagem ){
+		errmsg.empty().html('<p class="accept">'+mensagem+'</p>').fadeIn("fast");
+	}
+	
+	$.ajaxSetup({
+		url:	path,
+		type:	'GET',
+		beforeSend: carregando,
+		error: 		errosend
+	});
+
+	//READ
+	var loadler = $('.lendoartigos');
+	var listler = $('.usuarios');
+	var loadmore = $('.j_read');
+	
+	listler.empty();
+	loadmore.hide();
+
+	function carregarusuarios( instrucoes ){
+		$.ajax({
+			data:		instrucoes,
+			dataType:	"json",
+			beforeSend: '',
+			error: 		'',
+			success: 	function( users ){
+				// console.log(users.length);
+				// console.log(users);
+				if(!jQuery.isEmptyObject(users)){
+					$.each( users, function(index, user){
+						var li = $('<li class="j_' + user.id + '"></li>');
+						li.append('<h3>' + user.nome + '</h3>');
+						li.append( '<div class="contatos">' + 
+	            				 '<div class="email"><a href="mailto:' + user.email + 
+	            				 '">' + user.email + 
+	            				 '</a></div>' +
+	            				 '<div class="telefone">' + user.telefone + '</div>' +
+        							 '</div><!-- /contatos -->');
+						li.append('<div class="manage">' +
+									    '<div id="' + user.id + '" class="btnaction edit j_edit"><%= image_tag "edit.png", alt: "Editar", title: "Editar" %></div>' +
+									    '<div id="' + user.id + '" class="btnaction delete j_delete"><%= image_tag "delete.png", alt: "Excluir", title: "Excluir" %></div>' +
+									    '</div><!-- /manage -->');
+
+						// $.each(user, function(key, value){
+						// 	listler.append("<li>" + key + "</li>")
+						// });
+
+						listler.append(li);
+					});
+					// listler.append( JSON.stringify(users) );
+					loadler.delay(300).fadeOut("slow");
+					if(users.length == 2){
+						loadmore.delay(1000).fadeIn("slow");
+					} else {
+						loadmore.fadeIn('fast').text('Não existem mais usuários. Recarregar página').click(function(){
+							location.reload();
+						});	
+						loadler.delay(300).fadeOut("slow");
+					}
+					
+				} else {
+					loadmore.fadeIn('fast').text('Não existem mais usuários. Recarregar página').click(function(){
+						location.reload();
+					});	
+					loadler.delay(300).fadeOut("slow");
+				}
+			}		
+		});
+	} //finaliza funcao
+	
+	carregarusuarios("acao=ler&offset=0&limit=2");
+	
+	var offset  = 2;
+	loadmore.click(function(){
+		loadler.fadeIn("fast");
+		carregarusuarios("acao=ler&offset="+offset+"&limit=2");
+		offset += 2;
+	});
+
+	
+	//CONSULTA
+	// var formmodal	= $('form[name="editar"]');
+	var modal = $('.editar');
+	var btn_new_user = $('#btn_novo_usurario');
+
+	listler.on('click','.j_edit',function(){
+		var idedit = $(this).attr("id");
+		// var consult = "acao=consulta&editid="+idedit;
+		var liaction = $('li[class="j_'+idedit+'"]');
+		liaction.css("background","#09F");
+		liaction.addClass('opened');
+
+		$.ajax({
+			url: Routes.edit_user_path(idedit),
+			beforeSend: function(){ modal.fadeIn("slow"); },
+			success: 	function( retorno ){
+						modal.empty().html(retorno);
+						liaction.addClass('opened');
+						// $.each( retorno, function(key, value){
+						// 	formmodal.find("input[name='"+key+"']").val(value);
+						// });
+			},
+			complete: 	function(){
+				$('.modal-inner').fadeIn("slow");
+			}			
+		});
+
+		// como .jedit é uma div não há necessidade do 'return false'
+		// ou 'e.preventDefault()' no evento click
+
+	});
+
+	modal.on('ajax:success', 'form', function(evt, data, status, xhr){
+	  modal.empty().html(xhr.responseText);
+	})
+	.on('click','.j_buttom_close', function(){
+			modal.children().fadeOut("fast",function(){
+				modal.fadeOut("slow");
+				listler.find('.opened').css("background","#FFF").removeClass('opened');
+			});
+		});
+
+	// CRIAR
+	$('#btn_novo_usuario').click(function(){
+		$.ajax({
+			url: Routes.new_user_path(),
+			beforeSend: function(){ modal.fadeIn("slow"); },
+			success: 	function( retorno ){
+						modal.empty().html(retorno);
+						// $.each( retorno, function(key, value){
+						// 	formmodal.find("input[name='"+key+"']").val(value);
+						// });
+			},
+			complete: 	function(){
+				$('.modal-inner').fadeIn("slow");
+			}			
+		});
+		return false;
+	});
+
+	//DELETE
+	listler.on('click','.j_delete',function(){
+		var delid = $(this).attr("id");
+		// var deldata = "acao=deletar&del="+delid;
+		var liaction = $('li[class="j_'+delid+'"]');
+		
+		liaction.css("background","red");
+		carregarusuarios("acao=ler&offset="+offset+"&limit=1");
+
+		$.ajax({
+			url:		Routes.user_path(delid),
+			method: 'DELETE',
+			beforeSend: '',
+			error: 		'',
+			success: 	function(){
+				liaction.fadeOut("slow");	
+			}
+			
+		});
+	});
+
+}); // $('.users.index').ready

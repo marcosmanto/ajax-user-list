@@ -1,0 +1,64 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ * require_tree .
+ * require_directory ./css
+ * require_self
+ *= require css/bootstrap.min
+ *= require css/bootstrap-theme.min
+ *= require bootstrap-dialog.min
+ */
+
+
+ul.usuarios {margin:0; padding:0; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;}
+body{ background:url(bg5.jpg) repeat;}
+
+.mais{padding:5px; background:url(bg5.jpg) repeat; text-align:center; border:2px solid #CCC; margin:10px; color:#333; cursor:pointer;}
+.mais:hover{background:#48A4FF; color:#FFF;}
+
+.usuarios{display:block; list-style:none; margin:10px;}
+.usuarios li{display:block; padding:10px; background:#fff; margin-bottom:10px; position:relative;}
+.usuarios li .contatos{font:14px Tahoma, Geneva, sans-serif; display:block; background:#fbfbfb; padding:5px; margin-top:5px;}
+.usuarios li .contatos a{text-decoration:none; color:#069;}
+.usuarios li .contatos a:hover{text-decoration:underline;}
+.usuarios li .contatos .email{display:inline; padding:5px 5px 5px 20px; background:url(email.png) center left no-repeat;}
+.usuarios li .contatos .telefone{display:inline; padding:5px 5px 5px 10px; float:right; background:url(phone.png) center left no-repeat;}
+
+.usuarios li:hover .manage{display:block;}
+.usuarios li .manage{position:absolute; right:5px; top:5px; display:none;}
+.usuarios li .manage .btnaction{cursor:pointer; padding:4px; border-radius:6px; -moz-border-radius:6px; -webkit-border-radius:6px;}
+.usuarios li .manage .edit{float:left; margin-right:8px; }
+.usuarios li .manage .edit:hover{background:#09F;}
+.usuarios li .manage .delete{float:right;}
+.usuarios li .manage .delete:hover{background:#F00;}
+
+.lendoartigos{padding:10px; text-align:center; background:#09F; color:#FFF; font-weight:bold;}
+.lendoartigos img{display:block; width:25px; margin:0 auto 5px auto;}
+
+
+
+.users {
+	margin: 10px;
+	&.index {
+		.editar, .criar {
+			position:fixed; height:100%; width:100%; background:rgba(0,0,0,0.4) url(load.gif) center center no-repeat; left:0px; top:0px; display:none;
+		.modal-inner {
+			h1{ margin: 5px 0 0 0;}
+			position:absolute; left:50%; top:50%; padding:0 20px 20px 20px; background:#fff; margin-left:-160px; margin-top:-250px; }
+		}
+	}
+	form label{display:block; margin-bottom:5px;}
+	form label .campo{display:block; font-size:12px;}
+	form label input{padding:5px; border:5px solid #CCC; width:280px;}
+	form .btnedit{display:block; margin:5px 0 0 0; float:left; cursor:pointer;}
+	form .btnclose{display:block; margin:5px 0 0 0; float:right; cursor:pointer;}
+}

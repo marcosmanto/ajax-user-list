@@ -1,0 +1,11 @@
+<div class="modal-inner">
+	<h1>Edit User</h1>
+
+	<%= render 'form' %>
+
+	<%- unless request.xhr? -%>
+		<%= link_to 'Show', @user %> |
+		<%= link_to 'Back' %>
+	<% end -%>		
+
+</div>

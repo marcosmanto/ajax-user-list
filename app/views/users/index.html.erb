@@ -1,0 +1,59 @@
+<p>
+<%= link_to 'New User', new_user_path, id: 'btn_novo_usuario', class: 'btn btn-lg btn-primary' %>
+</p>
+<ul class="usuarios">
+  <%# @users.each do |user|  %>
+    <li>
+      <h3><%#= user.nome %></h3>
+        <div class="contatos">
+            <div class="email"><%#= mail_to user.email %></div>
+            <div class="telefone"><%#= user.telefone %></div>
+        </div><!-- /contatos -->
+        
+        <div class="manage">
+          <div class="btnaction edit j_edit">
+            <%#= image_tag "edit.png", alt: "Editar", title: "Editar" %>
+          </div>
+          <div class="btnaction delete j_delete">
+            <%#= image_tag "delete.png", alt: "Excluir", title: "Excluir" %>
+          </div>
+        </div><!-- /manage -->        
+    </li>
+  <%# end -%>
+</ul>
+
+<div class="mais j_read">Carregar Mais</div>
+
+<div class="lendoartigos">
+  <%= image_tag 'load.gif', alt: 'Carregando', title: 'Carregando' %>Aguarde, obtendo usuários!
+</div>
+
+<div class="editar">
+  <%#= render partial: "form", locals: { user: User.first } %>
+</div>
+
+<!-- Button trigger modal 
+<a href = "<%= new_user_path %>" class="btn btn-primary btn-lg" data-toggle="modal" data-target="modal-body" >
+  Launch demo modal
+</a>
+-->
+
+<!-- Modal 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+-->
